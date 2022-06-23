@@ -1,5 +1,9 @@
+import uuid
+
 from django.db import models
 from django.utils import timezone
+import datetime
+from multiselectfield import MultiSelectField
 
 
 
@@ -68,9 +72,8 @@ class Player(models.Model):
     PRIMARY_CHOICES = [
         ('Right', 'Right'),
         ('Left', 'Left'),
-        ('Both', 'Both')
+        ('Both', 'Both')]
 
-    ]
     POSITION_CHOICES = [
         ('Pitcher', (
             ('P', 'Pitcher'),
@@ -101,7 +104,6 @@ class Player(models.Model):
             ('Util', 'Utility'),
         )
          ),
-
     ]
 
     EXPERIENCE_CHOICES = [
@@ -111,20 +113,25 @@ class Player(models.Model):
         ('INDY', 'Independent League'),
         ('MILB', 'Minor League'),
         ('MLB', 'Major League'),
-        ('PRO', 'A Professional League')
+        ('PRO', 'Other Professional League')
     ]
 
+    YEAR_CHOICES = []
+
+    id = models.UUIDField('UUID', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
-    number = models.IntegerField()
-    position = models.CharField(max_length=30, choices=POSITION_CHOICES, null=True, blank=True)
+    primary_position = models.CharField(max_length=30, choices=POSITION_CHOICES, default=POSITION_CHOICES[4][0][0])
+    other_position= MultiSelectField(choices=POSITION_CHOICES, null=True, blank=True)
     bats = models.CharField(max_length=10, choices=PRIMARY_CHOICES)
     throws = models.CharField(max_length=10, choices=PRIMARY_CHOICES)
     DOB = models.DateField()
-    joined = models.IntegerField(max_length='4')
+
+    for r in range(1990, (datetime.datetime.now().year)):
+        YEAR_CHOICES.append((r,r))
+    dateJoined = models.IntegerField('Year Joined', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     experience = models.CharField(max_length=30, choices=EXPERIENCE_CHOICES, null=True, blank=True)
     updated = models.DateTimeField(default=timezone.now())
 
     def __str__(self):
         return self.name
-
 #

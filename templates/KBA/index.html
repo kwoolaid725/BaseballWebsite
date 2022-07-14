@@ -1,0 +1,36 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+    <h1>Chicago Korean Baseball League</h1>
+<div class="row">
+{% for team in teams %}
+    <div class="col-md-4">
+        <div class="card mb-2">
+{#            <img class="card-img-top" src="{% static type.image %}">#}
+            <div class="card-body">
+                <h2 class="card-title">{{ team.name }}</h2> <a href="{% url 'players' %}"
+                class="btn btn-primary">
+                Vacuum List  </a>
+                <a href="{% url 'cordless' %}" class="btn btn-primary">
+                CR Test
+                </a>
+                <a href="{% url 'cordless' %}" class="btn btn-primary">
+                Real-Use Test
+                </a>
+                <a href="{% url 'cordless' %}" class="btn btn-primary">
+                Field Test
+                </a>
+                <a href="{% url 'cordless' %}" class="btn btn-primary">
+                VOC
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+
+
+
+
+{% endblock %}

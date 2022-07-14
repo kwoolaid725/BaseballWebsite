@@ -11,16 +11,7 @@ from multiselectfield import MultiSelectField
 
 # Team history/roster/stats reamin even when it's deleted from ...
 
-class Team(models.Model):
-    name = models.CharField(max_length=20)
-    year_formed = models.IntegerField(max_length=4)
-    manager = models.CharField(max_length=20)
-    content = models.TextField()
-    no_titles = models.IntegerField(help_text="Number of Championship Title")
-    updated = models.DateTimeField(default=timezone.now())
 
-    def __str__(self):
-        return self.name
 
 
 class Roster(models.Model):
@@ -30,42 +21,6 @@ class Roster(models.Model):
 
     def __str__(self):
         return self.team
-
-# class Position(models.Model):
-#     POSITION_CHOICES = [
-#         ('Pitcher', (
-#             ('P', 'Pitcher'),
-#             ('SP', 'Starting Pitcher'),
-#             ('RP', 'Relief Pitcher'),
-#         )
-#          ),
-#         ('Catcher', (
-#             ('C', 'Catcher'),
-#         )
-#          ),
-#         ('Infielder', (
-#             ('IF', 'Infield'),
-#             ('1B', 'First Base'),
-#             ('2B', 'Second Base'),
-#             ('3B', 'Third Base'),
-#             ('SS', 'Shortstop'),
-#         )
-#          ),
-#         ('Outfielder', (
-#             ('OF', 'Outfield'),
-#             ('LF', 'Left Field'),
-#             ('RF', 'Right Field'),
-#             ('CF', 'Center Field'),
-#         )
-#          ),
-#         ('Utility', (
-#             ('Util', 'Utility'),
-#         )
-#          ),
-#
-#     ]
-#
-#     position = models.CharField(max_length=30, choices=POSITION_CHOICES)
 
 
 class Player(models.Model):
@@ -134,4 +89,20 @@ class Player(models.Model):
 
     def __str__(self):
         return self.name
-#
+
+
+class Team(models.Model):
+    name = models.CharField(max_length=20)
+    year_formed = models.IntegerField(max_length=4)
+    manager = models.CharField(max_length=20)
+    players = models.ManyToManyField(
+        Player
+        ?
+
+    )
+    content = models.TextField()
+    no_titles = models.IntegerField(help_text="Number of Championship Title")
+    updated = models.DateTimeField(default=timezone.now())
+
+    def __str__(self):
+        return self.name

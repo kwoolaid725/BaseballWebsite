@@ -1,12 +1,26 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from .models import Team, Player
+from django.views.generic import ListView, DetailView
 
 def index(request):
-    return HttpResponse("Dango Http Response")
+   teams = Team.objects.all()
+
+   context = {
+       'teams': teams
+   }
+
+   return render(request, 'index.html', context)
 
 
-#example for choices in model
-"""And in the forms.py:
-'Metric_name ': forms.Select(attrs={'class': 'form-control'})"""
+
+class AllModelList(ListView):
+    team = Team
+
+
+class TeamDetailView(DetailView):
+    # model = Model
+    queryset = Team.objects.filter(type__name='Cordless')
+
+    # model_detail.html is used since not declared with a 'template_name'
 
 # Create your views here.

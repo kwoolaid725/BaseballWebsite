@@ -126,7 +126,7 @@ class Player(models.Model):
     throws = models.CharField(max_length=10, choices=PRIMARY_CHOICES)
     DOB = models.DateField()
 
-    for r in range(1990, (datetime.datetime.now().year)):
+    for r in range(2000, (datetime.datetime.now().year)):
         YEAR_CHOICES.append((r,r))
     dateJoined = models.IntegerField('Year Joined', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     experience = models.CharField(max_length=30, choices=EXPERIENCE_CHOICES, null=True, blank=True)

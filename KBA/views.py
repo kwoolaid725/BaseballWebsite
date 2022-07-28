@@ -8,18 +8,16 @@ def index(request):
    context = {
        'teams': teams
    }
-
    return render(request, 'index.html', context)
 
 
-
-class AllModelList(ListView):
-    team = Team
-
-
-class TeamDetailView(DetailView):
-    # model = Model
-    queryset = Team.objects.filter(type__name='Cordless')
+# class AllModelList(ListView):
+#     team = Team
+#
+#
+# class TeamDetailView(DetailView):
+#     # model = Model
+#     p
 
     # model_detail.html is used since not declared with a 'template_name'
 

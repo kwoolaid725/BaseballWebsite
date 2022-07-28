@@ -5,23 +5,27 @@ from django.utils import timezone
 import datetime
 from multiselectfield import MultiSelectField
 
-
-
-
-
 # Team history/roster/stats reamin even when it's deleted from ...
 
 
+# class Roster(models.Model):
+#     team = models.ForeignKey(Team, on_delete=models.CASCADE)
+#     players = 'Player'
+#     updated = models.DateTimeField(default=timezone.now())
+#
+#     def __str__(self):
+#         return self.team
 
-
-class Roster(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    players = 'Player'
+class Team(models.Model):
+    name = models.CharField(max_length=20)
+    year_formed = models.IntegerField(max_length=4)
+    manager = models.CharField(max_length=20)
+    content = models.TextField()
+    no_titles = models.IntegerField(help_text="Number of Championship Title")
     updated = models.DateTimeField(default=timezone.now())
 
     def __str__(self):
-        return self.team
-
+        return self.name
 
 class Player(models.Model):
     PRIMARY_CHOICES = [
@@ -75,6 +79,7 @@ class Player(models.Model):
 
     id = models.UUIDField('UUID', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
+    team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True)
     primary_position = models.CharField(max_length=30, choices=POSITION_CHOICES, default=POSITION_CHOICES[4][0][0])
     other_position= MultiSelectField(choices=POSITION_CHOICES, null=True, blank=True)
     bats = models.CharField(max_length=10, choices=PRIMARY_CHOICES)
@@ -91,18 +96,12 @@ class Player(models.Model):
         return self.name
 
 
-class Team(models.Model):
-    name = models.CharField(max_length=20)
-    year_formed = models.IntegerField(max_length=4)
-    manager = models.CharField(max_length=20)
-    players = models.ManyToManyField(
-        Player
-        ?
 
-    )
-    content = models.TextField()
-    no_titles = models.IntegerField(help_text="Number of Championship Title")
-    updated = models.DateTimeField(default=timezone.now())
+# Stats
 
-    def __str__(self):
-        return self.name
+# class StatsBase(models.Model):
+#     class Meta:
+#         abstract = True
+#
+#     PA = models.IntegerField()
+#     AB =

@@ -1,18 +1,11 @@
-{% extends "base_generic.html" %}
-{% load static %}
+# templates/KBA/index.html
 
-{% block content %}
-    <h1>Chicago Korean Baseball League</h1>
-<div class="row">
-{% for team in teams %}
-    <div class="col-md-4">
-        <div class="card mb-2">
-            <div class="card-body">
-                <h2 class="card-title">{{ team.name }}
-            </div>
-        </div>
-    </div>
-    {% endfor %}
-
-
-{% endblock %}
+{% if teams %}
+    <ul>
+        {% for team in teams %}
+            <li><a href="./{{ team.id }}">{{ team.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>There's no team content</p>
+{% endif %}

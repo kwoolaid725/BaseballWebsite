@@ -1,0 +1,19 @@
+<h1>{{ team.name }}</h1>
+    <textarea>{{ team.content }}</textarea>
+
+<p>Manager: {{ team.manager}}</p>
+<p>Year Formed: {{ team.year_formed}}</p>
+
+<body>
+{% if players %}
+       <h3>Player Roster</h3>
+    <ol start=1>
+        {% for player in players %}
+        <li>{{ player.name }} {{ player.primary_position }}</li>
+        {% endfor %}
+    </ol>
+{% endif %}
+{#{{ team.players_set.all}}#}
+
+
+</body>

@@ -16,17 +16,6 @@ from multiselectfield import MultiSelectField
 #     def __str__(self):
 #         return self.team
 
-class Team(models.Model):
-    name = models.CharField(max_length=20)
-    year_formed = models.IntegerField(max_length=4)
-    manager = models.CharField(max_length=20)
-    content = models.TextField()
-    no_titles = models.IntegerField(help_text="Number of Championship Title")
-    updated = models.DateTimeField(default=timezone.now())
-
-    def __str__(self):
-        return self.name
-
 class Player(models.Model):
     PRIMARY_CHOICES = [
         ('Right', 'Right'),
@@ -79,7 +68,6 @@ class Player(models.Model):
 
     id = models.UUIDField('UUID', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
-    team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True)
     primary_position = models.CharField(max_length=30, choices=POSITION_CHOICES, default=POSITION_CHOICES[4][0][0])
     other_position= MultiSelectField(choices=POSITION_CHOICES, null=True, blank=True)
     bats = models.CharField(max_length=10, choices=PRIMARY_CHOICES)
@@ -90,12 +78,33 @@ class Player(models.Model):
         YEAR_CHOICES.append((r,r))
     dateJoined = models.IntegerField('Year Joined', choices=YEAR_CHOICES, default=datetime.datetime.now().year)
     experience = models.CharField(max_length=30, choices=EXPERIENCE_CHOICES, null=True, blank=True)
-    updated = models.DateTimeField(default=timezone.now())
+    updated = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
 
 
+
+class Team(models.Model):
+    name = models.CharField(max_length=20)
+    year_formed = models.IntegerField()
+    manager = models.CharField(max_length=20)
+    players = models.ManyToManyField(Player, through='PlayerToTeam')
+    content = models.TextField()
+    no_titles = models.IntegerField(help_text="Number of Championship Title")
+    updated = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+
+class PlayerToTeam(models.Model):
+    team = models.ForeignKey(Team, null= True, on_delete=models.SET_NULL)
+    players = models.ForeignKey(Player, null=True, on_delete=models.SET_NULL)
+    back_number = models.IntegerField(unique=True)
+    manager = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.players} to {self.team}'
 
 # Stats
 

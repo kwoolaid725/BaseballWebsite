@@ -84,12 +84,11 @@ class Player(models.Model):
         return self.name
 
 
-
 class Team(models.Model):
     name = models.CharField(max_length=20)
     year_formed = models.IntegerField()
     manager = models.CharField(max_length=20)
-    players = models.ManyToManyField(Player, through='PlayerToTeam')
+    players = models.ManyToManyField(Player, through='PlayerToTeam', related_name='teams') ## how do I use related_name for reverse relationship?
     content = models.TextField()
     no_titles = models.IntegerField(help_text="Number of Championship Title")
     updated = models.DateTimeField(default=timezone.now)
@@ -101,10 +100,18 @@ class PlayerToTeam(models.Model):
     team = models.ForeignKey(Team, null= True, on_delete=models.SET_NULL)
     players = models.ForeignKey(Player, null=True, on_delete=models.SET_NULL)
     back_number = models.IntegerField(unique=True)
+    current_team = models.BooleanField(default=False)
     manager = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.players} to {self.team}'
+
+
+# player history shows previous teams / stats
+#
+
+
+
 
 # Stats
 

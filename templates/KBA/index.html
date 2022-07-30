@@ -1,11 +1,16 @@
 # templates/KBA/index.html
 
-{% if teams %}
-    <ul>
-        {% for team in teams %}
-            <li><a href="./{{ team.id }}">{{ team.name }}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>There's no team content</p>
-{% endif %}
+ <h1>KBA Home</h1>
+
+ <a href="{% url 'team-list' %}"
+                class="btn btn-primary">
+                Teams List  </a>
+{#{% if teams %}#}
+{#    <ul>#}
+{#        {% for team in teams %}#}
+{#            <li><a href="./{{ team.id }}">{{ team.name }}</a></li>#}
+{#        {% endfor %}#}
+{#    </ul>#}
+{#{% else %}#}
+{#    <p>There's no team content</p>#}
+{#{% endif %}#}

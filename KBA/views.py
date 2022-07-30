@@ -13,20 +13,29 @@ def index(request):
        raise Http404("Team does not exist")
    return render(request, 'KBA/index.html', {'teams': teams})
 
+def teams(request):
+    try:
+        teams = Team.objects.all()
+    except Team.DoesNotExist:
+        raise Http404("Team does not exist")
+    return render(request, 'KBA/teams.html', {'teams': teams})
 
-def detail(request, id):
-    team = Team.objects.get(id=id)
+
+def team_detail(request, name):
+    team = Team.objects.get(name=name)
     players = team.players.all()
 
     context = {'team': team,
                'players': players
 
                }
-    return render(request, 'KBA/detail.html', context)
+    return render(request, 'KBA/team_detail.html', context)
 
 
 # class TeamDetailView(DetailView):
+#
 #     model = Team
+#     slug_field = 'team'
 #     field = ['name', 'year_formed', 'manager', 'players', 'content', 'no_titles']
 
 

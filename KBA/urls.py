@@ -6,8 +6,8 @@ import KBA.views
 
 urlpatterns = [
     path('', KBA.views.index, name='index'),
-    path('<int:id>', KBA.views.detail, name='detail'),
-    # path('<int:pk>', KBA.views.TeamDetailView.as_view(), name='team-detail'),
+    path('teams/', KBA.views.teams, name='team-list'),
+    path('teams/<str:name>/', KBA.views.team_detail, name='team-detail'),
 
 
 ]

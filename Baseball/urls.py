@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('KBA/', include('KBA.urls')),
 
+
 ]

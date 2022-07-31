@@ -9,11 +9,13 @@
        <h3>Player Roster</h3>
     <ol start=1>
         {% for player in players %}
-        <li>{{ player.name }} {{ player.primary_position }} </li>
+        <li><a href="{% url 'player-detail' player.uuid %}">{{ player.name }}</a> {{ player.primary_position }} </li>
         {% endfor %}
     </ol>
 {% endif %}
 {#{{ team.players_set.all}}#}
+
+
 
 
 </body>

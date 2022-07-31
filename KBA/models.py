@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 import datetime
 from multiselectfield import MultiSelectField
+from django.urls import reverse
 
 # Team history/roster/stats reamin even when it's deleted from ...
 
@@ -66,7 +67,7 @@ class Player(models.Model):
 
     YEAR_CHOICES = []
 
-    id = models.UUIDField('UUID', primary_key=True, default=uuid.uuid4, editable=False)
+    uuid = models.UUIDField('UUID', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
     primary_position = models.CharField(max_length=30, choices=POSITION_CHOICES, default=POSITION_CHOICES[4][0][0])
     other_position= MultiSelectField(choices=POSITION_CHOICES, null=True, blank=True)
@@ -82,6 +83,9 @@ class Player(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('player-detail', kwargs={'uuid': self.uuid})
 
 
 class Team(models.Model):
@@ -99,7 +103,7 @@ class Team(models.Model):
 class PlayerToTeam(models.Model):
     team = models.ForeignKey(Team, null= True, on_delete=models.SET_NULL)
     players = models.ForeignKey(Player, null=True, on_delete=models.SET_NULL)
-    back_number = models.IntegerField(unique=True)
+    back_number = models.IntegerField(unique=True)                       ## How do I show back_number in team and player details?
     current_team = models.BooleanField(default=False)
     manager = models.BooleanField(default=False)
 

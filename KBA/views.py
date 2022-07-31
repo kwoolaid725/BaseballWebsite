@@ -32,6 +32,24 @@ def team_detail(request, name):
     return render(request, 'KBA/team_detail.html', context)
 
 
+class AllPlayerList(ListView):
+    player = Player
+
+
+def player_detail(request, uuid):
+    player = Player.objects.get(uuid=uuid)
+    team = Team.objects.all()
+
+    context = {'player': player,
+               'team': team
+
+               }
+
+    return render(request, 'KBA/player_detail.html', context)
+# class PlayerDetailView(DetailView):
+#     model = Player
+#     field = ['id', 'name', 'primary_position' ]
+
 # class TeamDetailView(DetailView):
 #
 #     model = Team

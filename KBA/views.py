@@ -11,7 +11,7 @@ def index(request):
        teams = Team.objects.all()
    except Team.DoesNotExist:
        raise Http404("Team does not exist")
-   return render(request, 'KBA/index.html', {'teams': teams})
+   return render(request, 'index.html', {'teams': teams})
 
 def teams(request):
     try:

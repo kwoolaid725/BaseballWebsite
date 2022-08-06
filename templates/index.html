@@ -1,0 +1,16 @@
+# templates/index.html
+
+
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block content %}
+
+
+ <h1>KBA Home</h1>
+
+ <a href="{% url 'team-list' %}"
+                class="btn btn-primary">
+                Teams List  </a>
+
+{% endblock %}

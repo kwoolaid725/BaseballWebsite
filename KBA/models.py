@@ -69,6 +69,7 @@ class Player(models.Model):
 
     uuid = models.UUIDField('UUID', primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=50)
+    team = models.ManyToManyField('Team', through='PlayerToTeam', related_name='player')
     primary_position = models.CharField(max_length=30, choices=POSITION_CHOICES, default=POSITION_CHOICES[4][0][0])
     other_position= MultiSelectField(choices=POSITION_CHOICES, null=True, blank=True)
     bats = models.CharField(max_length=10, choices=PRIMARY_CHOICES)
@@ -97,6 +98,9 @@ class Team(models.Model):
     no_titles = models.IntegerField(help_text="Number of Championship Title")
     updated = models.DateTimeField(default=timezone.now)
 
+
+    # picture = models.ImageField(upload_to='images/team_pics')
+
     def __str__(self):
         return self.name
 
@@ -110,9 +114,61 @@ class PlayerToTeam(models.Model):
     def __str__(self):
         return f'{self.players} to {self.team}'
 
+class Field(models.Model):
+    name = models.CharField()
+
+class Match(models.Model):
+    slug = models.SlugField(unique=True)
+    home_team = models.ForeignKey(Team, related_name='home_matches')
+    away_team = models.ForeignKey(Team, related_name='away_matches')
+    field = models.ForeignKey(Field)
+    date = models.DateTimeField()
+
+
+class BoxScore(models.Model):
+    match = models.OneToOneField(Match)
+    score_hometeam = models.IntegerField()
+    score_awayteam = models.IntegerField()
+    hits_hometeam = models.IntegerField()
+    hits_awayteam = models.IntegerField()
+    error_hometeam = models.IntegerField()
+    error_awayteam = models.IntegerField()
+
+class MatchStats(models.Model):
+    match = models.ForeignKey(Match)
+    player = models.ForeignKey(Player, related_name='stats')
+    PA = models.IntegerField()
+    R = models.IntegerField()
+    H = models.IntegerField()
+    double = models.IntegerField()
+    triple = models.IntegerField()
+    HR = models.IntegerField()
+    RBI = models.IntegerField()
+    BB = models.IntegerField()
+    SO = models.IntegerField()
+    GDP = models.IntegerField()
+    HBP = models.IntegerField()
+    SF = models.IntegerField()
+    sac_bunt = models.IntegerField()
+
+    @property
+    def AB(self):
+        # PA - (BB + HBP + SF + sac_bunt)
+        return self.AB - (self.BB + self.HBP + self.SF + self.sac_bunt)
+
+    # players = models.ManyToManyField(Player, related_name='games')
+
+
 
 # player history shows previous teams / stats
-#
+# 블로그
+# 선수 스탯,
+# 경기 스케쥴
+# 경기 결과
+# 메인페이지에 지역 비지니스 스폰서 광고
+# about 페이지 + 구글 지도
+# 로그인 관리
+
 
 
 

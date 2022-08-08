@@ -1,0 +1,17 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Blogs</h1>
+  {% if blog_list %}
+      <ul>
+        {% for blog in blog_list %}
+          <li>
+
+            <a href='./{{ blog.id }}'>{{ blog.title }}</a> ({{blog.title}})
+          </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        <p>Tadfa.</p>
+  {% endif %}
+{% endblock %}

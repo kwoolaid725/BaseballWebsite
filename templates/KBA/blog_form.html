@@ -1,0 +1,15 @@
+# templates/KBA/blog_form.html
+
+{% extends "base_generic.html" %}
+<div>
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Blog</legend>
+            {{ form }}
+        </fieldset>
+        <div>
+            <button type="submit">Post</button>
+        </div>
+    </form>
+</div>

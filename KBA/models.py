@@ -5,6 +5,10 @@ from django.utils import timezone
 import datetime
 from multiselectfield import MultiSelectField
 from django.urls import reverse
+from django.template.defaultfilters import slugify
+from django.contrib.auth.models import User
+
+
 
 # Team history/roster/stats reamin even when it's deleted from ...
 
@@ -97,8 +101,6 @@ class Team(models.Model):
     content = models.TextField()
     no_titles = models.IntegerField(help_text="Number of Championship Title")
     updated = models.DateTimeField(default=timezone.now)
-
-
     # picture = models.ImageField(upload_to='images/team_pics')
 
     def __str__(self):
@@ -115,18 +117,28 @@ class PlayerToTeam(models.Model):
         return f'{self.players} to {self.team}'
 
 class Field(models.Model):
-    name = models.CharField()
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 class Match(models.Model):
-    slug = models.SlugField(unique=True)
-    home_team = models.ForeignKey(Team, related_name='home_matches')
-    away_team = models.ForeignKey(Team, related_name='away_matches')
-    field = models.ForeignKey(Field)
+    slug = models.SlugField(null=True, blank=True, unique=True)
+    home_team = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL, related_name='home_matches')
+    away_team = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL, related_name='away_matches')
+    field = models.ForeignKey(Field, on_delete=models.CASCADE)
     date = models.DateTimeField()
 
+    def __str__(self):
+        return f'{self.away_team} at {self.home_team}'
+
+    def save(self, *args, **kwargs):  # new
+        if not self.slug:
+            self.slug = slugify(f'{self.away_team} - {self.home_team}')
+        return super().save(*args, **kwargs)
 
 class BoxScore(models.Model):
-    match = models.OneToOneField(Match)
+    match = models.OneToOneField(Match, on_delete=models.CASCADE)
     score_hometeam = models.IntegerField()
     score_awayteam = models.IntegerField()
     hits_hometeam = models.IntegerField()
@@ -134,9 +146,12 @@ class BoxScore(models.Model):
     error_hometeam = models.IntegerField()
     error_awayteam = models.IntegerField()
 
+    def __str__(self):
+        return self.match
+
 class MatchStats(models.Model):
-    match = models.ForeignKey(Match)
-    player = models.ForeignKey(Player, related_name='stats')
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, null=True, on_delete=models.SET_NULL, related_name='stats')
     PA = models.IntegerField()
     R = models.IntegerField()
     H = models.IntegerField()
@@ -156,7 +171,40 @@ class MatchStats(models.Model):
         # PA - (BB + HBP + SF + sac_bunt)
         return self.AB - (self.BB + self.HBP + self.SF + self.sac_bunt)
 
+    def __str__(self):
+        return self.match
+
     # players = models.ManyToManyField(Player, related_name='games')
+
+class PlayerStats(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    MatchStats = models.ForeignKey(MatchStats, null=True, on_delete=models.SET_NULL)
+
+    def __str__(self):
+        return self.player
+
+class Blog(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    updated = models.DateTimeField(default=timezone.now())
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('blog-detail', kwargs={'pk': self.pk})
+
+
+class Comment(models.Model):
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    comment_title = models.CharField(max_length=200)
+    comment_text = models.TextField()
+    comment_updated = models.DateTimeField(default=timezone.now())
+
+    def __str__(self):
+        return self.comment_title
+
+
 
 
 

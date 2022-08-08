@@ -18,9 +18,13 @@
       {% block sidebar %}
         <ul class="sidebar-nav">
 
-            <li><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'about' %}">about</a></li>
             <li><a href="{% url 'team-list' %}">Teams</a></li>
             <li><a href="{% url 'player-list' %}">Players</a></li>
+            <li><a href="{% url 'blog-list' %}">Blogs</a></li>
+            <li><a href="#">LOGIN</a></li>
+            <li><a href="#">SIGN UP</a></li>
 {#            <a href="#">LOGIN</a>#}
 {#            <a href="#">SIGN UP</a>#}
         </ul>

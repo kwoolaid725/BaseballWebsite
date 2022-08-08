@@ -1,0 +1,21 @@
+#blog-detail
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {% if blog %}
+				<h1>{{ blog.title }}</h1>
+        <textarea>{{ blog.content }}</textarea>
+        {% if blog.comment_set %}
+            {% for c in blog.comment_set.all %}
+                <li>{{ c.comment_title }} {{ c.comment_updated }}</li>
+                <textarea>{{ c.comment_text }}</textarea>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>

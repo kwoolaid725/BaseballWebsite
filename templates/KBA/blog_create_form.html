@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% block content %}
+    <div class="mb-3">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset>
+                <legend class="mb-4 fw-bold">글쓰기</legend>
+                <div class="mb-3">
+                    <label label for="id_title" class="form-label fw-bold">TITLE</label>
+                    <input class="form-control mb-4" type="text" name="title" maxlength="200" required id="id_title"
+                           placeholder="Please enter your details.">
+
+                </div>
+
+                <div class="mb-3">
+                    <label label for="id_content" class="form-label fw-bold">CONTENT</label>
+
+                    <textarea rows=5 type="text" class="form-control mb-4" name="content"
+                              placeholder="Please enter your details." required_id="id_text"
+                              style="height: 300px"></textarea>
+                </div>
+
+            </fieldset>
+            <div>
+                <button class="btn btn-dark" type="submit">글쓰기</button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}

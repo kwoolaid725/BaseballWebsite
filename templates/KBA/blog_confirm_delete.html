@@ -1,8 +1,11 @@
-
 {% extends "base_generic.html" %}
 {% block content %}
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Comment Post">
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-2">
+            <p class="fs-4">"{{ object }}" 해당 글을 삭제 합니다. </p>
+        </div>
+
+        <input class="btn btn-dark" type="submit" value="Confirm">
     </form>
-{% endblock content %}
+{% endblock %}

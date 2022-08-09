@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+{% block content %}
+    <div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3 row">
+                <label for="id_username" class="col-sm-2 col-form-label">아이디</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="text" name="username" autofocus autocapitalize="none" autocomplete="username"
+                           maxlength="150" required id="id_username">
+                </div>
+            </div>
+            <div class="mb-3 row">
+                <label for="id_password" class="col-sm-2 col-form-label">패스워드</label>
+                <div class="col-sm-10">
+                    <input class="form-control" type="password" name="password" autocomplete="current-password" required id="id_password">
+                </div>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-dark mb-3">로그인</button>
+            </div>
+
+
+        </form>
+    </div>
+{% endblock content %}

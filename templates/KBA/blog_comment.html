@@ -1,8 +1,23 @@
-
 {% extends "base_generic.html" %}
 {% block content %}
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Comment Post">
+    <form method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend class="mb-4 fw-bold">코멘트 쓰기</legend>
+            {#            <div class="mb-3">#}
+            {#                <label label for="id_comment_title" class="form-label fw-bold">TITLE</label>#}
+            {#                <input class="form-control" type="text" name="comment_title" maxlength="200" required#}
+            {#                       id="id_comment_title">#}
+            {#            </div>#}
+
+            <div class="mb-3">
+                <label label for="id_comment_text" class="form-label fw-bold">CONTENT</label>
+                <textarea class="form-control" type="text" name="comment_text" maxlength="200" required
+                          id="id_comment_text"
+                          style="height: 300px"></textarea>
+            </div>
+
+            <input class="btn btn-dark" type="submit" value="코멘트 작성">
+        </fieldset>
     </form>
 {% endblock content %}

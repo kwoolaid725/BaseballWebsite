@@ -8,7 +8,7 @@ from django.views.generic.edit import FormMixin, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from KBA.forms import CommentForm
-from .models import Team, Player, PlayerToTeam, Blog
+from .models import Team, Player, PlayerToTeam, Blog, Match
 
 
 # def index(request):
@@ -21,10 +21,10 @@ from .models import Team, Player, PlayerToTeam, Blog
 #        raise Http404("Team does not exist")
 #    return render(request, 'index.html', {'teams': teams})
 
-def home(request):
+def index(request):
     teams = Team.objects.all()
     context = {'teams': teams}
-    return render(request, 'KBA/home.html', context)
+    return render(request, 'index.html', context)
 
 
 def about(request):
@@ -51,7 +51,7 @@ def team_detail(request, name):
 
 
 class AllPlayerList(ListView):
-    player = Player
+    model = Player
 
 
 def player_detail(request, uuid):
@@ -62,6 +62,14 @@ def player_detail(request, uuid):
                'team': team
                }
     return render(request, 'KBA/player_detail.html', context)
+
+
+class AllMatchList(ListView):
+    model = Match
+
+
+
+# Blog0
 
 class AllBlogList(ListView):
     model = Blog

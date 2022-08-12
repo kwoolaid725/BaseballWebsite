@@ -1,0 +1,26 @@
+# templates/KBA/match_list.html
+{% block content %}
+    {% if object_list %}
+          <h1>Match Schedule</h1>
+            <table>
+              <tr>
+                <th></th>
+                <th scope="col">Date</th>
+                <th scope="col">Away vs. Home</th>
+
+              </tr>
+                  {% for match in object_list %}
+                      <tr>
+                        <td>{{ match.id }}</td>
+                        <td>{{ match.date }}</td>
+                        <td>{{ match.slug }}</td>
+                      </tr>
+                  {% endfor %}
+            </table>
+            <ul>
+
+        </ul>
+    {% else %}
+        <p>There's no team content</p>
+    {% endif %}
+{% endblock %}

@@ -6,11 +6,24 @@
 
 {% block content %}
 
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Title</title>
+  </head>
+  <body>
+     <h1>KBA Home</h1>
+      {% for team in teams %}
+            <div>
+                <h5><a href="{% url 'team-list' %}" > {{ team.name }}</a> </h5>
+            </div>
 
- <h1>KBA Home</h1>
+        {%  endfor %}
 
- <a href="{% url 'team-list' %}"
-                class="btn btn-primary">
-                Teams List  </a>
+</html>
+
+
 
 {% endblock %}

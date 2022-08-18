@@ -109,7 +109,7 @@ class Team(models.Model):
 class PlayerToTeam(models.Model):
     team = models.ForeignKey(Team, null= True, on_delete=models.SET_NULL)
     players = models.ForeignKey(Player, null=True, on_delete=models.SET_NULL)
-    back_number = models.IntegerField(unique=True)                       ## How do I show back_number in team and player details?
+    back_number = models.IntegerField(unique=True)
     current_team = models.BooleanField(default=False)
     manager = models.BooleanField(default=False)
 
@@ -117,12 +117,23 @@ class PlayerToTeam(models.Model):
         return f'{self.players} to {self.team}'
 
 class Field(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=40)
+
+    class Meta:
+        ordering = ('name',)
 
     def __str__(self):
         return self.name
 
+class Season(models.Model):
+    year = models.IntegerField()
+
+    def __str__(self):
+        return self.year
+
+
 class Match(models.Model):
+    season = models.ForeignKey(Season, null=True, on_delete=models.SET_NULL, related_name='season_matches')
     slug = models.SlugField(null=True, blank=True, unique=True)
     home_team = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL, related_name='home_matches')
     away_team = models.ForeignKey(Team, null=True, on_delete=models.SET_NULL, related_name='away_matches')
@@ -132,22 +143,39 @@ class Match(models.Model):
     def __str__(self):
         return f'{self.away_team} at {self.home_team}'
 
-    def save(self, *args, **kwargs):  # new
+    def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(f'{self.away_team} - {self.home_team}')
+            self.slug = slugify(f'{self.away_team} vs. {self.home_team}')
         return super().save(*args, **kwargs)
 
 class BoxScore(models.Model):
     match = models.OneToOneField(Match, on_delete=models.CASCADE)
-    score_hometeam = models.IntegerField()
-    score_awayteam = models.IntegerField()
+    run_hometeam = models.IntegerField()
+    run_awayteam = models.IntegerField()
     hits_hometeam = models.IntegerField()
     hits_awayteam = models.IntegerField()
     error_hometeam = models.IntegerField()
     error_awayteam = models.IntegerField()
 
+
+    def win(self):
+        if self.run_hometeam > self.run_awayteam:
+            hometeam_win = 1
+            return hometeam_win
+        elif self.run_awayteam > self.run_hometeam:
+            awayteam_win = 1
+            return awayteam_win
+        else:
+            hometeam_draw = 1
+            awayteam_draw = 1
+            return hometeam_draw, awayteam_draw
+
     def __str__(self):
         return self.match
+
+class Standing(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True)
+
 
 class MatchStats(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
@@ -176,7 +204,8 @@ class MatchStats(models.Model):
 
     # players = models.ManyToManyField(Player, related_name='games')
 
-class PlayerStats(models.Model):
+class PositionStats(models.Model):
+    season = models.ForeignKey(Season, null=True, on_delete=models.SET_NULL)
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     MatchStats = models.ForeignKey(MatchStats, null=True, on_delete=models.SET_NULL)
 
@@ -205,6 +234,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.comment_title
+
+
 
 
 

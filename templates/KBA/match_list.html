@@ -1,4 +1,7 @@
-# templates/KBA/match_list.html
+# templates/KBA/match_list.html <br>
+# Add filter by team
+{% extends "base_generic.html" %}
+
 {% block content %}
     {% if object_list %}
           <h1>Match Schedule</h1>
@@ -6,14 +9,19 @@
               <tr>
                 <th></th>
                 <th scope="col">Date</th>
-                <th scope="col">Away vs. Home</th>
+                <th scope="col">Field</th>
+                <th scope="col">Home</th>
+                <th scope="col">Away</th>
+                <th scope="col">Results</th>
 
               </tr>
                   {% for match in object_list %}
                       <tr>
                         <td>{{ match.id }}</td>
                         <td>{{ match.date }}</td>
-                        <td>{{ match.slug }}</td>
+                        <td>{{ match.field }}</td>
+                        <td>{{ match.home_team }}</td>
+                        <td>{{ match.away_team }}</td>
                       </tr>
                   {% endfor %}
             </table>

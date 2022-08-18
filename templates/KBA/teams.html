@@ -1,11 +1,14 @@
 # templates/KBA/teams.html
+{% extends "base_generic.html" %}
+{% block content %}
+    {% if teams %}
+        <ul>
+            {% for team in teams %}
+                <li><a href="./{{ team.name }}">{{ team.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There's no team content</p>
+    {% endif %}
 
-{% if teams %}
-    <ul>
-        {% for team in teams %}
-            <li><a href="./{{ team.name }}">{{ team.name }}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <p>There's no team content</p>
-{% endif %}
+{% endblock %}
